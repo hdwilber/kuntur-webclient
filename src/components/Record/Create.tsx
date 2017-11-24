@@ -56,7 +56,7 @@ class RecordCreate extends React.Component<OwnProps, OwnState> {
       <h1>Create a new Record </h1>
         <Form.Field>
           <label>Title</label>
-          <input name="email" value={this.state.title} onChange={this.handleInputChange} placeholder='Title' />
+          <input name="title" value={this.state.title} onChange={this.handleInputChange} placeholder='Title' />
         </Form.Field>
         <Form.Field>
           <label>Description</label>
