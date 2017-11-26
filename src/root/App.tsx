@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import '../scss/index.scss';
 import { Session } from '../types'
 
-import { Grid, Modal } from 'semantic-ui-react'
+import { Transition, Grid, Modal } from 'semantic-ui-react'
 
 import Navbar from '../components/Navbar'
 import { ExplorerLogin } from '../components/Explorer'
 
-import { restore, login, register } from '../redux/explorer/actions'
+import { logout, restore, login, register } from '../redux/explorer/actions'
 
 
 interface OwnProps{
@@ -24,6 +24,7 @@ interface ConnProps {
 interface ConnDispatches {
   explorerSessionRestore: () => void;
   explorerLogin: (data: any) => void;
+  explorerLogout: () => void;
   explorerRegister: (data: any) => void;
 }
 
@@ -37,6 +38,7 @@ function mapDispatchesToProps(dispatch: any) {
   return {
     explorerSessionRestore: () => dispatch (restore()),
     explorerLogin: (data: any) => dispatch(login(data)),
+    explorerLogout: () => dispatch(logout()),
     explorerRegister: (data: any) => dispatch(register(data)),
   }
 };
@@ -50,9 +52,11 @@ class App extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnStat
     }
 
     this.handleClickLogin = this.handleClickLogin.bind(this)
+    this.handleClickLogout = this.handleClickLogout.bind(this)
     this.handleExplorerLogin = this.handleExplorerLogin.bind(this)
     this.handleExplorerRegister = this.handleExplorerRegister.bind(this)
     this.handleExplorerCancel = this.handleExplorerCancel.bind(this)
+    this.handleExplorerLogout = this.handleExplorerLogout.bind(this)
   }
 
   componentDidMount () {
@@ -77,10 +81,31 @@ class App extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnStat
     })
   }
 
+  handleClickLogout() {
+    this.setState({
+      showStartDialog: false
+    })
+
+    this.handleExplorerLogout()
+  }
+
+  handleExplorerLogout() {
+    const { explorerLogout } = this.props
+    explorerLogout()
+  }
+
   handleExplorerCancel () {
     this.setState({
       showStartDialog: false
     })
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    if (nextProps.explorer) {
+      if (nextProps.explorer.session) {
+        this.setState({showStartDialog: false})
+      }
+    }
   }
 
   render() {
@@ -92,6 +117,7 @@ class App extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnStat
           session={explorer.session}
           explorer={explorer.explorer}
           onClickLogin={this.handleClickLogin}
+          onClickLogout={this.handleClickLogout}
         />
         <Grid centered>
           <Grid.Row>
@@ -101,18 +127,25 @@ class App extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnStat
           </Grid.Row>
         </Grid>
 
-        <Modal open={this.state.showStartDialog}
-          onClose={this.handleExplorerCancel}
-          size="tiny"
+        <Transition visible={this.state.showStartDialog}
+          mountOnShow={true}
+          unmountOnHide={true}
+          transitionOnMount={true}
+          duration={350}
         >
-          <Modal.Header>Start to Explore</Modal.Header>
-          <Modal.Content>
-            <ExplorerLogin
-              onLogin={this.handleExplorerLogin}
-              onRegister={this.handleExplorerRegister}
-            /> 
-          </Modal.Content>
-        </Modal>
+          <Modal open={true}
+            onClose={this.handleExplorerCancel}
+            size="tiny"
+          >
+            <Modal.Header>Start to Explore</Modal.Header>
+            <Modal.Content>
+              <ExplorerLogin
+                onLogin={this.handleExplorerLogin}
+                onRegister={this.handleExplorerRegister}
+              /> 
+            </Modal.Content>
+          </Modal>
+        </Transition>
       </div>
     );
   }

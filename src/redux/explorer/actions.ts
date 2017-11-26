@@ -11,6 +11,7 @@ import {
   EXPLORER_FAILED,
 
   EXPLORER_SESSION_RESTORE,
+  EXPLORER_SESSION_END,
 
   IEXPLORER_DEFAULT,
   EXPLORER_CHANGED,
@@ -97,6 +98,25 @@ export function login (data: any) {
   }
 }
 
+
+export function logout () {
+  return (dispatch: any, getState: () => IExplorer) => {
+    dispatch({
+      type: EXPLORER_SESSION_END,
+      payload: {
+      } 
+    } as Action<EXPLORER_SESSION_END>)
+
+    localStorage.removeItem ('KUNTUR_SESSION')
+
+    dispatch ({
+      type: EXPLORER_SESSION_CHANGED,
+      payload: {
+        session: null 
+      }
+    } as Action<EXPLORER_SESSION_CHANGED>) 
+  }
+}
 export function register (data: any) {
   return (dispatch: any, getState: () => IExplorer) => {
     dispatch({

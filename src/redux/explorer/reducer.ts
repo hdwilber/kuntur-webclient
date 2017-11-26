@@ -10,6 +10,7 @@ import {
 
   EXPLORER_SESSION_FAILED,
   EXPLORER_SESSION,
+  EXPLORER_SESSION_END,
   EXPLORER_SESSION_CHANGED,
 
   EXPLORER_SESSION_RESTORE,
@@ -31,11 +32,20 @@ export const explorerReducer = handleActions<IExplorer, any>({
   },
 
   [EXPLORER_SESSION_CHANGED]: (state: IExplorer, action: Action<EXPLORER_SESSION_CHANGED>) : IExplorer => {
+    const { session } = action.payload
+
+    if (session) {
+      return {
+        ...state,
+        status: 'logged',
+        session: action.payload.session,
+        explorer: new Explorer()
+      }
+    }
     return {
       ...state,
-      status: 'logged',
-      session: action.payload.session,
-      explorer: new Explorer()
+      status: 'ended',
+      session: null,
     }
   },
   [EXPLORER_SESSION_FAILED]: (state: IExplorer, action:Action<EXPLORER_FAILED>) : IExplorer => {

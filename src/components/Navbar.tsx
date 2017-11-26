@@ -10,10 +10,11 @@ interface NavbarProps{
   explorer: Explorer
   session: Session
   onClickLogin: () => void
+  onClickLogout: () => void
 }
 
 function renderMenuItemUser (props: NavbarProps) {
-  const { explorer, session, onClickLogin } = props
+  const { explorer, session, onClickLogin, onClickLogout } = props
   if (session && explorer) {
     return (
       <Menu.Item className="user" color={'green'}>
@@ -28,7 +29,7 @@ function renderMenuItemUser (props: NavbarProps) {
               <span className='text'>Profile</span>
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>Logout</Dropdown.Item>
+            <Dropdown.Item onClick={(e) => onClickLogout()}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Menu.Item>
