@@ -11,10 +11,11 @@ interface NavbarProps{
   session: Session
   onClickLogin: () => void
   onClickLogout: () => void
+  onRecordCreate: () => void
 }
 
 function renderMenuItemUser (props: NavbarProps) {
-  const { explorer, session, onClickLogin, onClickLogout } = props
+  const { explorer, session, onClickLogin, onClickLogout, onRecordCreate } = props
   if (session && explorer) {
     return (
       <Menu.Item className="user" color={'green'}>
@@ -47,7 +48,7 @@ function renderMenuItemUser (props: NavbarProps) {
   }
 }
 const Navbar: React.SFC<NavbarProps> = (props: NavbarProps) => {
-  const { active } = props
+  const { onRecordCreate, active } = props
   return (
     <Menu borderless fluid>
       <Menu.Item className="brand" name='brand'>
@@ -67,7 +68,7 @@ const Navbar: React.SFC<NavbarProps> = (props: NavbarProps) => {
       <Menu.Item
         name="records"
         active={active === 'records'}
-        onClick={(e) => console.log('click')}
+        onClick={(e) => onRecordCreate()}
       >
         <Icon name="book" />
         Records

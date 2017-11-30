@@ -19,7 +19,14 @@ export class IError {
 }
 
 export class Record {
-  id: string;
-  title: string;
-  description: string;
+  id: string
+  title: string
+  description: string
+  media: any
+}
+
+export class MediaFile {
+  id: string
+  name: string
+  url: string
 }

@@ -17,6 +17,14 @@ export default abstract class Service {
     return headers
   }
 
+  createUploadHeaders() {
+    const headers = new Headers()
+    if (this.session) {
+      headers.append('Authorization', this.session.id)
+    }
+    return headers
+  }
+
   setSession(session: Session) {
     this.session = session
   }
