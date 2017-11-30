@@ -3,10 +3,8 @@ import { Grid,  } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
 
-import { ExplorerLogin } from '../components/Explorer'
 import { RecordCreate } from '../components/Record'
 
-import { login, register } from '../redux/explorer/actions'
 import { create } from '../redux/record/actions'
 
 interface OwnProps{
@@ -20,8 +18,6 @@ interface ConnProps {
 };
 
 interface ConnDispatches {
-  explorerLogin: (data: any) => void;
-  explorerRegister: (data: any) => void;
   recordCreate: (data: any) => void
 };
 
@@ -34,8 +30,6 @@ function mapStateToProps(state: any) {
 };
 function mapDispatchesToProps(dispatch: any) {
   return {
-    explorerLogin: (data: any) => dispatch(login(data)),
-    explorerRegister: (data: any) => dispatch(register(data)),
     recordCreate: (data: any) => dispatch(create(data)),
   }
 };
@@ -44,23 +38,12 @@ class Home extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnSta
   constructor (props: any) {
     super(props) 
 
-    this.handleExplorerLogin = this.handleExplorerLogin.bind(this)
-    this.handleExplorerRegister = this.handleExplorerRegister.bind(this)
     this.handleRecordCreateSubmit = this.handleRecordCreateSubmit.bind(this)
     this.handleRecordCreateCancel = this.handleRecordCreateCancel.bind(this)
   }
 
-  handleExplorerLogin (data: any) {
-    const { explorerLogin } = this.props
-    explorerLogin (data)
-  }
-
-  handleExplorerRegister(data: any) {
-    const { explorerRegister } = this.props
-    explorerRegister(data)
-  }
-
   handleRecordCreateSubmit (data: any) {
+    console.log('create')
     const { recordCreate } = this.props
     recordCreate(data)
   }
@@ -68,6 +51,14 @@ class Home extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnSta
   handleRecordCreateCancel (data: any) {
     console.log('Cancel create')
   }
+
+  //componentWillReceiveProps(nextProps) {
+    //if (nextProps.explorer) {
+      //this.explorer.session
+    //}
+  //}
+
+
   render () {
     const { explorer } = this.props
     if (explorer.session) {
@@ -82,16 +73,7 @@ class Home extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnSta
         </Grid>
       )
     } else {
-      return (
-        <Grid centered>
-          <Grid.Column mobile={12} tablet={6} computer={4} width={4}>
-            <ExplorerLogin
-              onLogin={this.handleExplorerLogin}
-              onRegister={this.handleExplorerRegister}
-            /> 
-          </Grid.Column>
-        </Grid>
-      )
+      return null
     }
   }
 }

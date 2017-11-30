@@ -15,12 +15,16 @@ import { RecordService } from '../../services'
 const rService = new RecordService(null)
 
 export function create (data: any) {
-  return (dispatch: any, getState: () => IRecord) => {
+  return (dispatch: any, getState: () =>any) => {
+    const state = getState()
+
     dispatch({
       type: RECORD_CREATE,
       payload: {
       } 
     } as Action<RECORD_CREATE>)
+
+    rService.setSession (state.explorer.session)
 
     rService.create (data)
     .then (res => {

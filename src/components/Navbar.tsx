@@ -7,12 +7,13 @@ const logo = require('../images/logo-small.png')
 
 interface NavbarProps{
   active: string
-  explorer: Explorer,
-  session: Session,
+  explorer: Explorer
+  session: Session
+  onClickLogin: () => void
 }
 
 function renderMenuItemUser (props: NavbarProps) {
-  const { explorer, session } = props
+  const { explorer, session, onClickLogin } = props
   if (session && explorer) {
     return (
       <Menu.Item className="user" color={'green'}>
@@ -37,7 +38,7 @@ function renderMenuItemUser (props: NavbarProps) {
       <Menu.Item
         name="user"
         active={props.active === 'user'}
-        onClick={(e) => console.log('click')}
+        onClick={(e) => onClickLogin()}
       >
         Login
       </Menu.Item>
