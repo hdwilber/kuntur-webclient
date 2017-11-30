@@ -1,1 +1,1 @@
-export { default as RecordCreate } from './Create'
+export { default as RecordEdit } from './Edit'

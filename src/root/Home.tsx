@@ -3,12 +3,15 @@ import { Grid,  } from 'semantic-ui-react'
 
 import { connect } from 'react-redux'
 
-import { RecordCreate } from '../components/Record'
+import { RecordEdit } from '../components/Record'
 
 import { create } from '../redux/record/actions'
 
+import RecordList from './Record/List'
+
 interface OwnProps{
 }
+
 interface OwnState{
 }
 
@@ -37,38 +40,17 @@ function mapDispatchesToProps(dispatch: any) {
 class Home extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnState> {
   constructor (props: any) {
     super(props) 
-
-    this.handleRecordCreateSubmit = this.handleRecordCreateSubmit.bind(this)
-    this.handleRecordCreateCancel = this.handleRecordCreateCancel.bind(this)
   }
-
-  handleRecordCreateSubmit (data: any) {
-    console.log('create')
-    const { recordCreate } = this.props
-    recordCreate(data)
-  }
-
-  handleRecordCreateCancel (data: any) {
-    console.log('Cancel create')
-  }
-
-  //componentWillReceiveProps(nextProps) {
-    //if (nextProps.explorer) {
-      //this.explorer.session
-    //}
-  //}
-
 
   render () {
     const { explorer } = this.props
     if (explorer.session) {
       return (
         <Grid centered>
-          <Grid.Column mobile={12} tablet={6} computer={4} width={4}>
-            <RecordCreate
-              onSubmit={this.handleRecordCreateSubmit}
-              onCancel={this.handleRecordCreateCancel}
-            />
+          <Grid.Column width={16}>
+            <RecordList />
+
+
           </Grid.Column>
         </Grid>
       )
