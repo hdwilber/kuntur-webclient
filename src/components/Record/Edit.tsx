@@ -2,6 +2,9 @@ import * as React from 'react'
 import { Checkbox, Button, Form } from 'semantic-ui-react'
 import { Record } from '../../types'
 import MediaNavigator from '../MediaNavigator'
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+
+const leafletStyle = require('leaflet/dist/leaflet.css')
 
 interface OwnProps{
   onSubmit: (dta: any) => void 
@@ -16,6 +19,7 @@ interface OwnState {
   published: boolean
   location: string
   files: FileList
+  locationMap: any
 }
 
 class RecordEdit extends React.Component<OwnProps, OwnState> {
@@ -26,12 +30,14 @@ class RecordEdit extends React.Component<OwnProps, OwnState> {
       description: '',
       published: false,
       location: '',
-      files: null
+      files: null,
+      locationMap: null,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleFileChange = this.handleFileChange.bind(this)
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
+    this.handleLocationFound = this.handleLocationFound.bind(this)
 
     this.save = this.save.bind(this)
     this.cancel = this.cancel.bind(this)
@@ -64,8 +70,10 @@ class RecordEdit extends React.Component<OwnProps, OwnState> {
     })
   }
 
-  handleCheckboxChange(e:any) {
-
+  handleCheckboxChange(e:any, props: any) {
+    this.setState({
+      [props.name]: props.checked
+    })
   }
 
   handleFileChange(e: any) {
@@ -74,6 +82,12 @@ class RecordEdit extends React.Component<OwnProps, OwnState> {
       files: e.target.files
     })
     onFileUpload(e.target.files)
+  }
+
+  handleLocationFound (e: any) {
+    this.setState({
+      locationMap: e.latlng,
+    })
   }
 
   render () {
@@ -97,6 +111,22 @@ class RecordEdit extends React.Component<OwnProps, OwnState> {
         </Form.Field>
 
         <MediaNavigator files={this.state.files} />
+
+        <Map style={{height: '250px'}} center={this.state.locationMap || [-17.394,-66.166]} zoom={8}
+          onlocationfound={this.handleLocationFound}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          />
+          <Marker position={[-17.394, -66.166]}>
+            <Popup>
+              <span>
+                A pretty CSS3 popup.<br />Easily customizable.
+              </span>
+            </Popup>
+          </Marker>
+        </Map>
 
         <Form.Field>
           <label>Location</label>

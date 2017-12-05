@@ -195,6 +195,7 @@ class App extends React.Component<OwnProps & ConnProps & ConnDispatches, OwnStat
           >
             <Modal open={true}
               onClose={this.handleRecordEditCancel}
+              closeOnDimmerClick={false}
               size="tiny"
             >
               <Modal.Header>Start to Explore</Modal.Header>
